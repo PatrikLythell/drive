@@ -14,5 +14,7 @@ results
 npm-debug.log
 
 node-modules
+node-modules/
+/node-modules
 
 config.*
