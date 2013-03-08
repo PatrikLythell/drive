@@ -39,13 +39,17 @@ class Portfolio
               @_projects[i].files.push(file.title) if mimeCheck.indexOf(file.mimeType) > -1
               if j is resp.items.length-1
                 console.log "callback"
-                @_cb(@_projects)
+                @_cb()
       # If resp.items.length is 0 throw away or display, depends on what makes sense for the user, or alert that it's empty!
 
+  getObj: ->
+    return @_projects
 
 module.exports =
   
   create: (item, callback) ->
     console.log "init"
     portfolio = new Portfolio item, (obj) ->
-      callback(obj)
+      setTimeout ->
+        callback(portfolio.getObj())
+      , 500

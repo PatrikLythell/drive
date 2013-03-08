@@ -73,7 +73,7 @@
                 }
                 if (j === resp.items.length - 1) {
                   console.log("callback");
-                  return _this._cb(_this._projects);
+                  return _this._cb();
                 }
               });
             })(item, j));
@@ -81,6 +81,10 @@
           return _results;
         });
       })(i, id);
+    };
+
+    Portfolio.prototype.getObj = function() {
+      return this._projects;
     };
 
     return Portfolio;
@@ -92,7 +96,9 @@
       var portfolio;
       console.log("init");
       return portfolio = new Portfolio(item, function(obj) {
-        return callback(obj);
+        return setTimeout(function() {
+          return callback(portfolio.getObj());
+        }, 500);
       });
     }
   };
