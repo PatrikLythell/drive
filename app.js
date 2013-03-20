@@ -42,11 +42,26 @@
   });
 
   app.get('/', function(req, res) {
-    google.listFiles(null, function(resp) {
-      return portfolio.create(resp, function(arr) {
-        return console.log(arr);
-      });
+    google.getRevs(null, '0BwF9Jd0AjOqgQkRRcjV4TGgtQ28', function(resp) {
+      return console.log(resp);
     });
+    /*
+      google.listFiles null, (resp) ->
+        portfolio.create resp, (arr) ->
+          console.log arr
+    
+      
+        for item in resp.items
+          if item.file and item.file.parents and item.file.parents[0]
+            console.log item.file if item.file.parents[0].id is '0BwF9Jd0AjOqgcVNtVlNrV3hweVE'
+          # if item.file.parents and item.file.parents[0].id
+            # item.file.parents # 
+      
+      google.listFiles null, (resp) ->
+        portfolio.create resp, (arr) ->
+          console.log arr
+    */
+
     return res.render('index', {
       title: 'Hello World!'
     });
