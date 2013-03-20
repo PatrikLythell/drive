@@ -56,7 +56,7 @@ class sync
     console.log "init"
 
 module.exports =
-  
+
   create: (item, callback) ->
     console.log "init"
     portfolio item, (resp) ->

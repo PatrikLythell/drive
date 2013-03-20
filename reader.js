@@ -16,7 +16,7 @@
 
   apiBase = 'https://www.googleapis.com/drive/v2/files/';
 
-  hardToken = "ya29.AHES6ZTx_1KjFiSNACU9SZECXHhjJVFpU8M7GToY_7YRzQ";
+  hardToken = "ya29.AHES6ZTUE6YtNB4h4_Y7HP-_wGGPKimSKUPbOcGgiadbJQ";
 
   module.exports = {
     config: function(config) {
@@ -76,8 +76,8 @@
           authorization: "Bearer " + hardToken
         }
       }, function(err, res, body) {
-        var getOurFOlder;
-        getOurFOlder = function(items) {
+        var getOurFolder;
+        getOurFolder = function(items) {
           var item, _i, _len;
           for (_i = 0, _len = items.length; _i < _len; _i++) {
             item = items[_i];
@@ -87,7 +87,7 @@
           }
         };
         body = JSON.parse(body);
-        body = getOurFOlder(body.items);
+        body = getOurFolder(body.items);
         if (!err) {
           return callback(body);
         } else {
@@ -112,6 +112,48 @@
     getFile: function(token, file, callback) {
       return request.get({
         uri: apiBase + file,
+        headers: {
+          authorization: "Bearer " + hardToken
+        }
+      }, function(err, res, body) {
+        if (!err) {
+          return callback(JSON.parse(body));
+        } else {
+          return console.log(err);
+        }
+      });
+    },
+    getChanges: function(token, callback) {
+      return request.get({
+        uri: "https://www.googleapis.com/drive/v2/changes?includeDeleted=true&maxResults=5000",
+        headers: {
+          authorization: "Bearer " + hardToken
+        }
+      }, function(err, res, body) {
+        if (!err) {
+          return callback(JSON.parse(body));
+        } else {
+          return console.log(err);
+        }
+      });
+    },
+    getSpecChange: function(token, id, callback) {
+      return request.get({
+        uri: "https://www.googleapis.com/drive/v2/changes/" + id,
+        headers: {
+          authorization: "Bearer " + hardToken
+        }
+      }, function(err, res, body) {
+        if (!err) {
+          return callback(JSON.parse(body));
+        } else {
+          return console.log(err);
+        }
+      });
+    },
+    getRevs: function(token, id, callback) {
+      return request.get({
+        uri: apiBase + id + '/revisions',
         headers: {
           authorization: "Bearer " + hardToken
         }

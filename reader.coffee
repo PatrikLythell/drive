@@ -10,7 +10,7 @@ url = 'https://accounts.google.com/o/oauth2/token'
 
 apiBase = 'https://www.googleapis.com/drive/v2/files/'
 
-hardToken = "ya29.AHES6ZTx_1KjFiSNACU9SZECXHhjJVFpU8M7GToY_7YRzQ"
+hardToken = "ya29.AHES6ZTUE6YtNB4h4_Y7HP-_wGGPKimSKUPbOcGgiadbJQ"
 
 module.exports =
 
@@ -64,11 +64,11 @@ module.exports =
       headers:
         authorization: "Bearer #{hardToken}"
     , (err, res, body) ->
-      getOurFOlder = (items) ->
+      getOurFolder = (items) ->
         for item in items
           return item if item.mimeType is 'application/vnd.google-apps.folder' and item.title is 'Test'
       body = JSON.parse(body)
-      body = getOurFOlder(body.items)
+      body = getOurFolder(body.items)
       unless err then callback(body) else console.log err
 
   getChildren: (token, folder, callback) ->
@@ -82,6 +82,30 @@ module.exports =
   getFile: (token, file, callback) ->
     request.get
       uri: apiBase+file
+      headers:
+        authorization: "Bearer #{hardToken}"
+    , (err, res, body) ->
+      unless err then callback(JSON.parse(body)) else console.log err
+
+  getChanges: (token, callback) ->
+    request.get
+      uri: "https://www.googleapis.com/drive/v2/changes?includeDeleted=true&maxResults=5000"
+      headers:
+        authorization: "Bearer #{hardToken}"
+    , (err, res, body) ->
+      unless err then callback(JSON.parse(body)) else console.log err
+
+  getSpecChange: (token, id, callback) ->
+    request.get
+      uri: "https://www.googleapis.com/drive/v2/changes/"+id
+      headers:
+        authorization: "Bearer #{hardToken}"
+    , (err, res, body) ->
+      unless err then callback(JSON.parse(body)) else console.log err
+
+  getRevs: (token, id, callback) ->
+    request.get
+      uri: apiBase+id+'/revisions'
       headers:
         authorization: "Bearer #{hardToken}"
     , (err, res, body) ->
