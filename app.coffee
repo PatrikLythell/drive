@@ -3,6 +3,7 @@ jade = require 'jade'
 google = require './reader'
 config = require './config'
 portfolio = require './portfolio'
+db = require('mongojs').connect('mongodb://nodejitsu:51f55075e421154ed2175960e3756675@linus.mongohq.com:10072/nodejitsudb4055495529', ['users'])
 
 google.config(config.google)
 
@@ -65,8 +66,11 @@ app.get '/auth', (req, res) ->
 
 app.get '/oauth2callback', (req, res) ->
   google.getToken req.query.code, (resp) ->
-    console.log(resp)
-    res.end()
+    req.session.google = resp
+    res.redirect('/pick-name')
+
+app.get '/pick-name', (req, res) ->
+  res.render 'username'
 
 
 # SERVER

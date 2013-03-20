@@ -77,7 +77,7 @@
                   if (file.mimeType.split('/')[0] === 'video') {
                     fileObj.url = file.embedLink;
                   }
-                  _this.projects[i].files.push(fileObj);
+                  _this.projects[index].files.push(fileObj);
                   if (i === resp.items.length - 1) {
                     return callback();
                   }
@@ -115,6 +115,12 @@
       console.log("init");
       return portfolio(item, function(resp) {
         return callback(resp);
+      });
+    },
+    sync: function(changes, portfolio, callback) {
+      console.log("sync");
+      return sync(changes, portfolio, function() {
+        return callback;
       });
     }
   };

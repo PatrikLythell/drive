@@ -40,11 +40,11 @@ class portfolio
               if mimeCheck.indexOf(file.mimeType) > -1
                 thumbIndex = file.thumbnailLink.slice(0, file.thumbnailLink.lastIndexOf('='))
                 fileObj =
-                  id: file.id
-                  mime: file.mimeType
-                  thumb: thumbIndex
+                  id    : file.id
+                  mime  : file.mimeType
+                  thumb : thumbIndex
                 fileObj.url = file.embedLink if file.mimeType.split('/')[0] is 'video'             
-                @projects[i].files.push(fileObj)
+                @projects[index].files.push(fileObj)
                 callback() if i is resp.items.length-1
               else
                 callback() if i is resp.items.length-1
@@ -61,3 +61,8 @@ module.exports =
     console.log "init"
     portfolio item, (resp) ->
       callback(resp)
+
+  sync: (changes, portfolio, callback) ->
+    console.log "sync"
+    sync changes, portfolio, ->
+      callback
