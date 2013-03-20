@@ -70,7 +70,7 @@ app.get '/oauth2callback', (req, res) ->
     res.redirect('/pick-name')
 
 app.get '/pick-name', (req, res) ->
-  res.render 'username'
+  res.render 'username' 
 
 
 # SERVER

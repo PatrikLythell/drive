@@ -64,5 +64,5 @@ module.exports =
 
   sync: (changes, portfolio, callback) ->
     console.log "sync"
-    sync changes, portfolio, ->
-      callback
+    sync changes, portfolio, (resp) ->
+      callback(resp)

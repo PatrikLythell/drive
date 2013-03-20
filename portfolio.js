@@ -119,8 +119,8 @@
     },
     sync: function(changes, portfolio, callback) {
       console.log("sync");
-      return sync(changes, portfolio, function() {
-        return callback;
+      return sync(changes, portfolio, function(resp) {
+        return callback(resp);
       });
     }
   };
