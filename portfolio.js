@@ -34,7 +34,7 @@
             console.log("and we're back");
             _this.i--;
             if (_this.i === 0) {
-              return _this.callback();
+              return _this.callback(_this.projects);
             }
           });
         }
@@ -94,10 +94,6 @@
       })(index, id);
     };
 
-    portfolio.prototype.showObject = function() {
-      return this.projects;
-    };
-
     return portfolio;
 
   })();
@@ -117,8 +113,8 @@
   module.exports = {
     create: function(item, callback) {
       console.log("init");
-      return portfolio(item, function() {
-        return callback(portfolio.showObject());
+      return portfolio(item, function(resp) {
+        return callback(resp);
       });
     }
   };

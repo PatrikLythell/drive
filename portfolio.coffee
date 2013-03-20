@@ -18,7 +18,7 @@ class portfolio
         @addFolder resp, =>
           console.log "and we're back"
           @i--
-          @callback() if @i is 0
+          @callback(@projects) if @i is 0
         
   addFolder: (item, callback) ->
     console.log "addFolder"
@@ -50,9 +50,6 @@ class portfolio
                 callback() if i is resp.items.length-1
       # If resp.items.length is 0 throw away or display, depends on what makes sense for the user, or alert that it's empty!
 
-  showObject: ->
-    return @projects
-
 class sync
   
   constructor: (@changes, @portfolio) ->
@@ -62,5 +59,5 @@ module.exports =
   
   create: (item, callback) ->
     console.log "init"
-    portfolio item, ->
-      callback(portfolio.showObject())
+    portfolio item, (resp) ->
+      callback(resp)
