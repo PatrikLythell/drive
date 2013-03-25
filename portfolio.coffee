@@ -1,9 +1,9 @@
 google = require './reader'
 mimeCheck = require './mimeCheck'
   
-class portfolio
+portfolio =
 
-  constructor: (item, @callback) ->
+  init: (item, @callback) ->
     console.log "constructor"
     google.getChildren null, item.id, (resp) =>
       @findFolders(item) for item in resp.items
@@ -20,7 +20,7 @@ class portfolio
           @i--
           @callback(@projects) if @i is 0
         
-  addFolder: (item, callback) ->
+  addFolder: (item, _callback) ->
     console.log "addFolder"
     project =
       id          : item.id
@@ -29,9 +29,9 @@ class portfolio
       description : item.description
       files       : []
     @projects.push(project)
-    @getChildren(@projects.length-1, item.id, callback) # length for keeping i count on where to put children
+    @getChildren(@projects.length-1, item.id, _callback) # length for keeping i count on where to put children
 
-  getChildren: (index, id, callback) ->
+  getChildren: (index, id, _callback) ->
     do (index, id) =>
       google.getChildren null, id, (resp) =>
         for item, i in resp.items
@@ -45,24 +45,27 @@ class portfolio
                   thumb : thumbIndex
                 fileObj.url = file.embedLink if file.mimeType.split('/')[0] is 'video'             
                 @projects[index].files.push(fileObj)
-                callback() if i is resp.items.length-1
+                _callback() if i is resp.items.length-1
               else
-                callback() if i is resp.items.length-1
+                _callback() if i is resp.items.length-1
       # If resp.items.length is 0 throw away or display, depends on what makes sense for the user, or alert that it's empty!
 
-class sync
+sync =
   
-  constructor: (@changes, @portfolio) ->
-    console.log "init"
+  init: (@changes, @portfolio, @callback) ->
+    @cb()
+
+  cb: ->
+    @callback("init")
 
 module.exports =
 
   create: (item, callback) ->
     console.log "init"
-    portfolio item, (resp) ->
+    portfolio.init item, (resp) ->
       callback(resp)
 
   sync: (changes, portfolio, callback) ->
     console.log "sync"
-    sync changes, portfolio, (resp) ->
+    sync.init changes, portfolio, (resp) ->
       callback(resp)

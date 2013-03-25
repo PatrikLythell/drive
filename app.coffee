@@ -37,7 +37,7 @@ app.configure 'production', () ->
 
 app.get '/', (req, res) ->
   
-  google.getRevs null, '0BwF9Jd0AjOqgQkRRcjV4TGgtQ28', (resp) ->
+  portfolio.sync null, null, (resp) ->
     console.log resp
 
   ###

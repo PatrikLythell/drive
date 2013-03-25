@@ -44,7 +44,7 @@
   });
 
   app.get('/', function(req, res) {
-    google.getRevs(null, '0BwF9Jd0AjOqgQkRRcjV4TGgtQ28', function(resp) {
+    portfolio.sync(null, null, function(resp) {
       return console.log(resp);
     });
     /*

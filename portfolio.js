@@ -6,13 +6,12 @@
 
   mimeCheck = require('./mimeCheck');
 
-  portfolio = (function() {
-
-    function portfolio(item, callback) {
+  portfolio = {
+    init: function(item, callback) {
       var _this = this;
       this.callback = callback;
       console.log("constructor");
-      google.getChildren(null, item.id, function(resp) {
+      return google.getChildren(null, item.id, function(resp) {
         var _i, _len, _ref;
         _ref = resp.items;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -22,9 +21,8 @@
         _this.projects = [];
         return _this.i = 0;
       });
-    }
-
-    portfolio.prototype.findFolders = function(item) {
+    },
+    findFolders: function(item) {
       var _this = this;
       console.log("findFolders");
       return google.getFile(null, item.id, function(resp) {
@@ -39,9 +37,8 @@
           });
         }
       });
-    };
-
-    portfolio.prototype.addFolder = function(item, callback) {
+    },
+    addFolder: function(item, _callback) {
       var project;
       console.log("addFolder");
       project = {
@@ -52,10 +49,9 @@
         files: []
       };
       this.projects.push(project);
-      return this.getChildren(this.projects.length - 1, item.id, callback);
-    };
-
-    portfolio.prototype.getChildren = function(index, id, callback) {
+      return this.getChildren(this.projects.length - 1, item.id, _callback);
+    },
+    getChildren: function(index, id, _callback) {
       var _this = this;
       return (function(index, id) {
         return google.getChildren(null, id, function(resp) {
@@ -79,11 +75,11 @@
                   }
                   _this.projects[index].files.push(fileObj);
                   if (i === resp.items.length - 1) {
-                    return callback();
+                    return _callback();
                   }
                 } else {
                   if (i === resp.items.length - 1) {
-                    return callback();
+                    return _callback();
                   }
                 }
               });
@@ -92,34 +88,31 @@
           return _results;
         });
       })(index, id);
-    };
+    }
+  };
 
-    return portfolio;
-
-  })();
-
-  sync = (function() {
-
-    function sync(changes, portfolio) {
+  sync = {
+    init: function(changes, portfolio, callback) {
       this.changes = changes;
       this.portfolio = portfolio;
-      console.log("init");
+      this.callback = callback;
+      return this.cb();
+    },
+    cb: function() {
+      return this.callback("init");
     }
-
-    return sync;
-
-  })();
+  };
 
   module.exports = {
     create: function(item, callback) {
       console.log("init");
-      return portfolio(item, function(resp) {
+      return portfolio.init(item, function(resp) {
         return callback(resp);
       });
     },
     sync: function(changes, portfolio, callback) {
       console.log("sync");
-      return sync(changes, portfolio, function(resp) {
+      return sync.init(changes, portfolio, function(resp) {
         return callback(resp);
       });
     }
